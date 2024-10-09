@@ -4,28 +4,27 @@ using UnityEngine;
 
 public abstract class Enemy : Character
 {
-   private int demageHit;
-   public int DemageHit
+    private int damageHit;
+    public int DamageHit
     {
-        get 
+        get
         {
-            return demageHit;
+            return damageHit;
         }
+
         set
         {
-            demageHit = value;
+            damageHit = value;
         }
-    }
 
+    }
 
     private void Start()
     {
         Behavior();
     }
 
-
     public abstract void Behavior();
-   
 
-   
+
 }

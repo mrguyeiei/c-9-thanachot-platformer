@@ -1,43 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
-public class Crocodile : Enemy
+public class Crocodile : Enemy, IShootable
 {
 
     [SerializeField] private float attackRange;
-    public Player player;
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private Transform bulletSpawnPoint;
+    [SerializeField] public Player player;
 
-    [SerializeField] private float bulletSpawnTime;
-    [SerializeField] private float bulletTimer;
+
+    [field: SerializeField] public GameObject Bullet { get; set; }
+    [field: SerializeField] public Transform BulletSpawnPoint { get; set; }
+    [field: SerializeField] public float BulletSpawnTime { get; set; }
+    [field: SerializeField] public float BulletTimer { get; set; }
+
+    void Start()
+    {
+        Init(30);
+        BulletTimer = 0.0f;
+        BulletSpawnTime = 1.0f;
+        DamageHit = 30;
+        player = GameObject.FindObjectOfType<Player>();
+
+    }
+    
     private void Update()
     {
 
-        bulletTimer -= Time.deltaTime;
+        BulletTimer += Time.deltaTime;
 
         Behavior();
     }
     public override void Behavior()
     {
-        Vector3 direction = player.transform.position - transform.position;
-        float dirstance = direction.magnitude;
-
-        if (dirstance < attackRange)
+        Vector2 direction = player.transform.position - transform.position;
+        
+    
+        if (direction.magnitude <= attackRange )
         {
-            shoot();
+            Shoot();
         }
     }
-    private void shoot()
+    public void Shoot()
     {
-        if (bulletTimer <= 0)
+        if (BulletTimer >= BulletSpawnTime)
         {
-            Instantiate(bullet, bulletSpawnPoint.position, Quaternion.identity);
+            anim.SetTrigger("Shoot");
+            GameObject obj = Instantiate(Bullet, BulletSpawnPoint.position, Quaternion.identity);
+            Rock rock = obj.gameObject.GetComponent<Rock>();
+            rock.Init(20, this);
 
-            bulletTimer = bulletSpawnTime;
+            BulletTimer = 0;
         }
+        
 
-
+         //Instantiate(Bullet, BulletSpawnPoint.position, Quaternion.identity);
+        // BulletTimer = BulletSpawnTime; 
     }
+
 }

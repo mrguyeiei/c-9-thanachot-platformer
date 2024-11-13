@@ -18,17 +18,35 @@ public abstract class Character : MonoBehaviour
 
     }
 
+    public HeartBar healthBar;
     public Animator anim;
     public Rigidbody2D rb;
 
+    public virtual void Init(int newHealth)
+    {
+        health = newHealth;
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        healthBar.SetMaxHealth(health);
+    }
+
     public bool Isdead()
     {
-        return Health <= 0;
+        if (Health <= 0)
+        {
+            Destroy(this.gameObject);
+            return true;
+        }
+        else return false;
 
     }
     public void TakeDamage(int damage)
     {
         Health -= damage;
+
+        Isdead();
+
+        healthBar.SetHealth(health);
     }
 }
 

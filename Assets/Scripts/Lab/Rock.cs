@@ -1,12 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rock : Weapon
 {
+
+    
     public void Start()
     {
-        Damage = 40;
+        rb2d = GetComponent<Rigidbody2D>();
+        force = new Vector2(GetShootDiection() *10, 100);
+        Damage = 20;
         Move();
     }
 
@@ -16,10 +22,15 @@ public class Rock : Weapon
 
     public override void Move()
     {
-        Debug.Log("Rock is Moveing with rigidbody force");
+        rb2d.AddForce(force);
+        //Debug.Log("Rock is Moveing with rigidbody force");
     }
-    public override void OnHitWith()
+    public override void OnHitWith(Character character)
     {
-
+        if (character is Player)
+        {
+            character.TakeDamage(this.Damage);
+        }
+        //Console.WriteLine($"{this.name} : Overriding OnHitWith(Character)");
     }
 }

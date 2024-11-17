@@ -49,5 +49,13 @@ public class Ant : Enemy
         scale.x *= -1;
         transform.localScale = scale;
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Character playercharacter = collision.gameObject.GetComponent<Character>();
+            playercharacter.TakeDamage(10);
+        }
+    }
 
 }

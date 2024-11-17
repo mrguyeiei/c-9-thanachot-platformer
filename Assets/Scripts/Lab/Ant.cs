@@ -54,7 +54,7 @@ public class Ant : Enemy
         if (collision.gameObject.CompareTag("Player"))
         {
             Character playercharacter = collision.gameObject.GetComponent<Character>();
-            playercharacter.TakeDamage(10);
+            playercharacter.TakeDamage(2);
         }
     }
 
